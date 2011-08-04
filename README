@@ -1,0 +1,3 @@
+This application is meant to help students (like myself) help memorize the stuctures of the 21 alpha amino acids. This requires having the latest version (from git as of Aug 2011) of kwordquiz.
+
+Eventually, this repo will host an app that will allow students to be quizzed on the amino acids in a stand-alone application (without having to rely on kwordquiz for this).
