@@ -65,6 +65,8 @@ Rectangle {
             onSelectAction: {
                 if(actionName == "flash") {
                     screenLoader.loadNewComp(flashComp);
+                } else if(actionName == "quit") {
+                    Qt.quit();
                 }
             }
         }
@@ -73,10 +75,8 @@ Rectangle {
     Component {
         id: flashComp
         FlashCardsView {
-
+            onDone: screenLoader.loadNewComp(mainMenuComp);
         }
     }
-
-
 
 }

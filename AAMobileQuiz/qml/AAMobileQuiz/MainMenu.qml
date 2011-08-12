@@ -29,4 +29,12 @@ Column {
             selectAction("multi")
         }
     }
+
+    Button {
+        anchors.horizontalCenter: parent.horizontalCenter
+        buttonText: "Quit Application"
+        onButtonClicked: {
+            selectAction("quit")
+        }
+    }
 }
