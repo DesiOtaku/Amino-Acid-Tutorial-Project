@@ -1,7 +1,9 @@
 import QtQuick 1.0
 
 Rectangle {
+    id: rootFlashView
     signal done
+    property bool defaultFlipped: false
 
     XmlListModel {
         id: kvtmlModel
@@ -19,15 +21,12 @@ Rectangle {
     }
 
     ListView {
+        id: cardList
         model: kvtmlModel
         delegate: cardComp;
-        /*anchors.top: parent.top
-        anchors.bottom: actionRow.top
-        anchors.left: parent.left
-        anchors.right: parent.right*/
+        snapMode: ListView.SnapOneItem
         anchors.fill: parent
         orientation: ListView.Horizontal
-
     }
 
     Component {
@@ -35,12 +34,16 @@ Rectangle {
         FlashCard {
             text: aaName
             imgSrc: aaImage
+            width: rootFlashView.width
+            height: rootFlashView.height
+            flipped: rootFlashView.defaultFlipped
         }
     }
 
     Row {
         id: actionRow
         height: 64
+        opacity: cardList.moving
         anchors.bottom: parent.bottom
         anchors.horizontalCenter: parent.horizontalCenter
         Image {
@@ -56,10 +59,10 @@ Rectangle {
                 onClicked: done();
             }
         }
-        /*Image {
+        Image {
             height: parent.height
             width: parent.height
-            source: "previous.svg"
+            source: "shuffle.svg"
             sourceSize.height: height
             sourceSize.width: width
             smooth: true
@@ -67,10 +70,18 @@ Rectangle {
         Image {
             height: parent.height
             width: parent.height
-            source: "next.svg"
+            source: "link.svg"
             sourceSize.height: height
             sourceSize.width: width
             smooth: true
-        }*/
+            MouseArea {
+                anchors.fill: parent
+                onClicked: rootFlashView.defaultFlipped = !rootFlashView.defaultFlipped
+            }
+        }
+
+        Behavior on opacity {
+            NumberAnimation { duration: 5000; easing.type: Easing.OutExpo }
+        }
     }
 }

@@ -8,9 +8,8 @@ Flipable {
     property alias imgSrc: imgBack.source
 
     property int anchorSpace: 10
-
-    width: parent.height
-    height: parent.height
+    width: 200
+    height: 200
 
     front: Rectangle {
         radius: 3
