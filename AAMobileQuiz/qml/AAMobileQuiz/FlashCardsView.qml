@@ -4,6 +4,7 @@ Rectangle {
     id: rootFlashView
     signal done
     property bool defaultFlipped: false
+    property bool shuffleMode: false
 
     XmlListModel {
         id: kvtmlModel
@@ -20,9 +21,25 @@ Rectangle {
         }
     }
 
+    ListModel {
+        id: shuffleModel
+
+        function doTheTruffleShuffle() { //called this since this shuffle is rather ineloquent
+            clear();
+            for(var i=0;i< kvtmlModel.count;i++) { //first pull all the data
+                append({"aaName": kvtmlModel.get(i).aaName, "aaImage": kvtmlModel.get(i).aaImage});
+            }
+            for(var s=0;s< kvtmlModel.count;s++) {  //now throw data to various locations
+                var randomFrom = Math.floor( (Math.random() * shuffleModel.count) - 1 );
+                var randomTo = Math.floor( (Math.random() * shuffleModel.count) - 1 );
+                move(randomFrom,randomTo,1);
+            }
+        }
+    }
+
     ListView {
         id: cardList
-        model: kvtmlModel
+        model: shuffleMode ? shuffleModel : kvtmlModel
         delegate: cardComp;
         snapMode: ListView.SnapOneItem
         anchors.fill: parent
@@ -66,6 +83,16 @@ Rectangle {
             sourceSize.height: height
             sourceSize.width: width
             smooth: true
+
+            MouseArea {
+                anchors.fill: parent
+                onClicked:  {
+                    rootFlashView.shuffleMode = !rootFlashView.shuffleMode;
+                    if(rootFlashView.shuffleMode) {
+                        shuffleModel.doTheTruffleShuffle();
+                    }
+                }
+            }
         }
         Image {
             height: parent.height
